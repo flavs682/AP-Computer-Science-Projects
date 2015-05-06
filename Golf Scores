@@ -1,0 +1,126 @@
+public class GolfScore {
+
+	public static void main(String[] args) {
+		// create 2D array sized 6 x 10
+	      int[][] scorecard = new int[6][10];
+	      
+	      // the total score for each player after 9 holes
+	     int playerTotal = 0;
+	      // the winner of each hole (the lowest score in each column)
+	      int holeWinner = 0;
+	      
+	      
+	      // create the top row - Hole Numbers (row 0)
+	      int score = 0;
+	      
+	      for(int i = 0; i < scorecard[0].length; i++)
+	    	 {
+	    	  score++;
+	    	  if(i == 9)
+	    		  System.out.println("\t  Total");
+	    	  else
+	    	  System.out.print("\t \t" + "Hole " + score);
+	    	 }
+	    	 
+	   
+	   
+	      // create the random scores 1 - 9
+	    for(int row = 1; row < scorecard.length-1; row++)
+	    	for(int col = 0; col< (scorecard[row].length)-1; col++)
+	    		scorecard[row][col] = (int)(Math.random() * 9) + 1;
+	    
+	    
+	    
+	      // calculate the total for each player
+	    for(int row2 = 1; row2 < scorecard.length-1; row2++)
+	    {
+	    	playerTotal = 0;
+	    	for(int col2 = 0; col2 < (scorecard[row2].length)-1; col2++)
+	    		 {
+	    			playerTotal+=scorecard[row2][col2];
+	    			scorecard[row2][9] = playerTotal;
+	    			
+	    		 }
+	    } 
+	            
+	      // calculate the winner on each hole (lowest score)
+	 
+	    for(int row3 = 0; row3 < 10; row3++)
+	     {
+	    	 holeWinner = Math.min(Math.min(scorecard[1][row3], scorecard[2][row3]), Math.min(scorecard[3][row3], scorecard[4][row3]));
+	    	 if(holeWinner == scorecard[1][row3])
+	    		 holeWinner = 1;
+	    	 if(holeWinner == scorecard[2][row3])
+	    		 holeWinner = 2;
+	    	 if(holeWinner == scorecard[3][row3])
+	    		 holeWinner = 3;
+	    	 if(holeWinner == scorecard[4][row3])
+	    		 holeWinner = 4;
+	    	 
+	    	 scorecard[5][row3] = holeWinner;
+	     }
+	    		 
+	      
+	       
+	      // print the score card
+	      printScorecard(scorecard);
+	   
+	   }
+	   
+	   public static void printScorecard(int[][] scorecard)
+	   {
+	      // print top line
+	      //System.out.print("Player\t\t");
+	      //for (int c = 0; c < scorecard[0].length - 1; c++)
+	     // System.out.print("Hole " + (c + 1) + "\t");
+	      //System.out.print("Total");
+	      
+	      
+	      
+	      // print the scorecard
+
+	     for(int j = 1; j < (scorecard.length-1); j++)
+	     {
+	    	System.out.print("Player:" + j);
+	    	 for(int o = 0; o<(scorecard[j].length)-1; o++)
+	    		 System.out.print("\t" + scorecard[j][o] + "\t");
+	    	 	System.out.print("  " + scorecard[j][9]);
+	    	 	System.out.print("\n");
+	     }
+	      // print the total
+	   System.out.print(" \nWinner:");
+	   for(int u = 0; u < 9; u++)
+	   System.out.print("\t \t" + scorecard[5][u]);
+	   System.out.print("\n\n");   
+	      // print the overall winner
+       int one = 0;
+       int two = 0;
+       int three = 0;
+       int four = 0;
+	   for(int count = 0; count < 10; count++)
+       {
+    	   int test = scorecard[5][count];
+    	   if(test == 1)
+    		   one++;
+    	   if(test == 2)
+    		   two++;
+    	   if(test == 3)
+    		   three++;
+    	   if(test == 4)
+    		   four++;
+       }
+	    	int winner = Math.max(Math.max(one, two), Math.max(three, four));
+	    	if(winner == one)
+	    		System.out.print("Overall Winner(s) is Player One!");
+	    	if(winner == two)
+	    		System.out.print("Overall Winner(s) is Player Two!");
+	    	if(winner == three)
+	    		System.out.print("Overall Winner(s) is Player Three!");
+	    	if(winner == four)
+	    		System.out.print("Overall Winner(s) is Player Four!");
+	   }
+
+
+	}
+
+
