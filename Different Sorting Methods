@@ -1,0 +1,169 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+
+public class StudentSort {
+
+	public static void main(String[] args) {
+
+		File file = new File("src/grades1.txt");
+		Scanner input;
+		int arraySize = 0;
+		String first, last;
+		int id, gradeLevel;
+		Student[] student = null;
+		int selection = 0;
+
+		
+		// Read the file to create the array of Student objects 
+		try{
+			input = new Scanner(file);
+			arraySize = input.nextInt();
+			student = new Student[arraySize];
+			for(int i = 0; i < arraySize; i++)
+			{
+				Student temp = new Student(input.next(), input.next(), input.nextInt(), input.nextInt());
+				student[i] = temp;
+				while(input.hasNextInt())
+				{
+					student[i].addTest(input.nextInt());
+				}
+			}
+			input.close();
+		}
+		catch(FileNotFoundException e){
+			e.printStackTrace();
+		}
+		// Print out array of Students
+		for(Student x:student)
+			System.out.println(x);
+
+		// Create a menu to choose which way to sort the data
+		do {
+			selection = printMenu();
+
+			switch (selection)
+			{
+			case 1: 
+				// Bubble Sort - Sort by Grade Level
+				bubbleSort(student);
+
+				// Print the sorted students using an enhanced-for-loop
+				break;
+
+			case 2:
+				// Selection Sort - Sort by Average
+				selectionSort(student);
+
+				// Print the sorted students using a while-loop
+				break;
+			case 3:
+				// Insertion Sort - Sort by Name (last name then first name)
+				insertionSort(student);
+
+				// Print the sorted students using a for-loop
+				break;
+
+			}
+			System.out.println();
+		} while (selection > 0 && selection <= 3);
+
+		System.out.println("Thank you!!");
+
+
+	}
+
+	/**
+	 * Creates a menu to make a choice
+	 * @return the choice to sort the students
+	 */
+	public static int printMenu()
+	{
+
+		String str = JOptionPane.showInputDialog("How do you want to sort?\n1. Grade Level\n2. Average\n3. Name\n4. Quit");
+		int choice = Integer.parseInt(str);
+		return choice;
+
+	}
+
+	/**
+	 * Sorts the students by grade level in ascending order
+	 * @param stu the array of Student
+	 */
+	public static void bubbleSort(Student[] stu)
+	{
+		for(int i = 0; i < stu.length-2; i++)
+		{
+			for(int x = 0; x < (stu.length - 2 - i); x++)
+			{
+				if(stu[x].getGradeLevel() > stu[x+1].getGradeLevel())
+				{
+					Student temp = stu[x];
+					stu[x] = stu[x+1];
+					stu[x+1] = temp;
+				}
+			}
+		}
+		for(Student y: stu)
+			System.out.println(y);
+
+	}
+
+
+
+	/**
+	 * Sorts the students by average in descending order
+	 * @param stu the array of Student
+	 */
+	public static void selectionSort(Student[] stu)
+	{
+		for(int i = 0; i < stu.length; i++)
+		{
+			int big_location = i;
+			for(int j = i+1; j < stu.length; j++)
+			{
+				if(stu[j].getAverage() > stu[big_location].getAverage())
+					big_location = j;
+			}
+			Student temp = stu[big_location];
+			stu[big_location] = stu[i];
+			stu[i] = temp;
+		}
+		int i = 0;
+		while(i < stu.length)
+		{
+			System.out.println(stu[i]);
+			i++;
+		}
+	}
+
+
+
+	/**
+	 * Sorts the students by Name in alphabetical order
+	 * @param stu the array of Student
+	 */
+	public static void insertionSort(Student[] stu)
+	{
+		for(int i = stu.length-2; i >= 0; i--)
+		{
+			Student temp = stu[i];
+			int j = i+1;
+			while(j < stu.length && stu[j].getLastName().compareTo(temp.getLastName()) < 0)
+			{
+				stu[j-1] = stu[j];
+				j = j+1;
+			}
+			stu[j-1] = temp;
+		}
+
+		for(int x = 0; x < stu.length; x++)
+		System.out.println(stu[x]);
+	}
+
+
+
+}
